@@ -1,4 +1,4 @@
-package koncept.disjunction.invoke;
+package koncept.disjunction.invocation;
 
 import java.io.NotSerializableException;
 import java.io.Serializable;
@@ -7,15 +7,20 @@ import java.lang.reflect.Method;
 
 import koncept.disjunction.describe.MethodIdentifier;
 import koncept.disjunction.describe.MethodResult;
-import koncept.disjunction.describe.SerializableMethodInvocation;
-import koncept.disjunction.messaging.DisjunctMessaging;
+import koncept.disjunction.describe.serializable.SerializableMethodInvocation;
+import koncept.disjunction.messaging.ClientTransportSerializer;
 
-public class DisjunctMethodInvocation implements InvocationHandler {
+/**
+ * This class turns an invocation into a Disjunct Message
+ * @author koncept
+ *
+ */
+public class DisjunctInvocationToMessage implements InvocationHandler {
 
-	private final DisjunctMessaging messaging;
+	private final ClientTransportSerializer messaging;
 	private final String name;
 	
-	public DisjunctMethodInvocation(String name, DisjunctMessaging messaging) {
+	public DisjunctInvocationToMessage(String name, ClientTransportSerializer messaging) {
 		this.name = name;
 		this.messaging = messaging;
 	}
@@ -27,9 +32,12 @@ public class DisjunctMethodInvocation implements InvocationHandler {
 			if (args[i] == null || args[i] instanceof Serializable)
 				serializableArgs[i] = (Serializable)args[i];
 			else throw new NotSerializableException("Argument index " + i + " not Serializable");
-		SerializableMethodInvocation invocation = new SerializableMethodInvocation(MethodIdentifier.methodIdentifier(method), serializableArgs);
+		SerializableMethodInvocation invocation = new SerializableMethodInvocation(
+				name,
+				MethodIdentifier.methodIdentifier(method),
+				serializableArgs);
 		
-		MethodResult result = messaging.invocation(name, invocation);
+		MethodResult result = messaging.send(invocation);
 		if (result.isException())
 			throw (Throwable)result.value();
 		return result.value();

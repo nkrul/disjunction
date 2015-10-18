@@ -1,7 +1,9 @@
-package koncept.disjunction.describe;
+package koncept.disjunction.describe.serializable;
 
 import java.io.NotSerializableException;
 import java.io.Serializable;
+
+import koncept.disjunction.describe.MethodResult;
 
 public class SerializableMethodResult implements MethodResult, Serializable {
 
