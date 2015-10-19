@@ -18,7 +18,12 @@ import koncept.disjunction.test.CallTrackerService;
 
 import org.junit.Test;
 
-public class LoopbackMessagingIT {
+/**
+ * Initial bootstrapping tests
+ * @author koncept
+ *
+ */
+public class LoopbackMessagingTest {
 
 	@Test
 	public void methodCallViaReflection() throws Exception {

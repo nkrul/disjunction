@@ -1,15 +1,16 @@
 package koncept.disjunction.test;
 
 import java.io.Serializable;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.concurrent.Callable;
 
-public interface CallTracker extends Remote {
+import koncept.disjunction.test.CallTracker.ThreadIdCallback;
 
-	public Integer methodInvocationCount() throws RemoteException;
+public interface NonRemoteCallTracker {
+
+	public Integer methodInvocationCount();
 	
-	public void checkedTestException() throws CheckedTestException, RemoteException;
+	public void checkedTestException() throws CheckedTestException;
 	
 	public String callback(ThreadIdCallback callable) throws Exception;
 	
@@ -20,4 +21,5 @@ public interface CallTracker extends Remote {
 			return Long.toString(thread.getId());
 		}
 	}
+	
 }

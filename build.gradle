@@ -1,5 +1,17 @@
 apply plugin: 'java'
 
+//run: "gradle install" to install to local repo
+// https://docs.gradle.org/current/userguide/maven_plugin.html
+apply plugin: 'maven'
+
+//http://jedicoder.blogspot.co.uk/2011/11/automated-gradle-project-deployment-to.html
+apply plugin: 'signing'
+
+
+//pom.groupId
+project.group = "koncept.disjunction"
+project.version = "1.0.0-SNAPSHOT"
+
 repositories {
 	mavenLocal()
 	mavenCentral()
@@ -8,3 +20,20 @@ repositories {
 dependencies {
     testCompile	'junit:junit:4.11'
 }
+
+
+
+
+// run: gradle upload
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			//mavenLocal()
+			//repository(url: "http://localhost:8081/nexus/content/repositories/snapshots") {
+				//authentication(userName: "admin", password: "admin123")
+			//}
+       }
+    }
+}
+
+

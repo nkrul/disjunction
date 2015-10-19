@@ -1,65 +1,49 @@
 package koncept.disjunction;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import java.util.List;
-
-import koncept.disjunction.test.CallTracker;
-import koncept.disjunction.test.CallTracker.ThreadIdCallback;
-import koncept.disjunction.test.CallTrackerService;
 import koncept.disjunction.test.CheckedTestException;
-import koncept.disjunction.test.JavaRmiSource;
 import koncept.disjunction.test.LoopbackRmiSource;
+import koncept.disjunction.test.NonRemoteCallTracker;
+import koncept.disjunction.test.NonRemoteCallTracker.ThreadIdCallback;
+import koncept.disjunction.test.NonRemoteCallTrackerService;
 import koncept.disjunction.test.RmiSource;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 
-@RunWith(Parameterized.class)
-public class RMIEquivalenceTest {
-	
-	private final RmiSource rmiSource;
-	
-	private CallTrackerService localTracker;
-	private CallTracker remoteTracker;
-	
-	@Parameters
-	public static List<Object[]> params() throws Exception {
-		return asList(
-				new Object[]{new LoopbackRmiSource()},
-				new Object[]{new JavaRmiSource()}
-		);
-	}
-	
-	public RMIEquivalenceTest(RmiSource rmiSource) {
-		this.rmiSource = rmiSource;
-	}
+public class RMIFunctionaltyTest {
+	private final RmiSource rmiSource = new LoopbackRmiSource();
+
+	private NonRemoteCallTrackerService localTracker;
+	private NonRemoteCallTracker remoteTracker;
 	
 	@Before
-	public void initRmiSource() {
+	public void init() {
+		localTracker = new NonRemoteCallTrackerService();
 		rmiSource.start();
-		localTracker = new CallTrackerService();
-		rmiSource.serverExpose(CallTracker.class.getSimpleName(), localTracker);
-		remoteTracker = (CallTracker)rmiSource.clientLookup(CallTracker.class.getSimpleName());
+		rmiSource.serverExpose(NonRemoteCallTracker.class.getSimpleName(), localTracker);
+		remoteTracker =  (NonRemoteCallTracker)rmiSource.clientLookup(NonRemoteCallTracker.class.getSimpleName());
 	}
 	
 	@After
-	public void teardownRmiSource() {
+	public void destroy() {
 		rmiSource.stop();
 	}
 	
 	@Test
+	public void canRemoteAnyInterface() {
+		assertNotNull(remoteTracker);
+	}
+	
+	@Test
 	public void clientListingContainsExpectedName() {
-		assertTrue(rmiSource.clientNames().contains(CallTracker.class.getSimpleName()));
+		assertTrue(rmiSource.clientNames().contains(NonRemoteCallTracker.class.getSimpleName()));
 	}
 	
 	@Test
@@ -100,7 +84,4 @@ public class RMIEquivalenceTest {
 		assertThat(remoteTracker.getClass().getInterfaces().length, is(1));
 	}
 	
-	
-
 }
-
