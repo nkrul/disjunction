@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.kncept.disjunction.describe.MethodInvocation;
 import com.kncept.disjunction.describe.MethodResult;
-import com.kncept.disjunction.loopback.LoopbackTransport;
+import com.kncept.disjunction.messaging.transportimpl.LoopbackTransport;
 import com.kncept.disjunction.service.DisjunctionClient;
 import com.kncept.disjunction.service.DisjunctionServer;
 

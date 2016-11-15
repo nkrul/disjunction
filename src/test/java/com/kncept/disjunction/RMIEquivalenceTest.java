@@ -17,12 +17,13 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.kncept.disjunction.test.CallTracker;
+import com.kncept.disjunction.test.CallTracker.ThreadIdCallback;
 import com.kncept.disjunction.test.CallTrackerService;
 import com.kncept.disjunction.test.CheckedTestException;
 import com.kncept.disjunction.test.JavaRmiSource;
 import com.kncept.disjunction.test.LoopbackRmiSource;
 import com.kncept.disjunction.test.RmiSource;
-import com.kncept.disjunction.test.CallTracker.ThreadIdCallback;
+import com.kncept.disjunction.test.SerializableRmiSource;
 
 @RunWith(Parameterized.class)
 public class RMIEquivalenceTest {
@@ -36,7 +37,8 @@ public class RMIEquivalenceTest {
 	public static List<Object[]> params() throws Exception {
 		return asList(
 				new Object[]{new LoopbackRmiSource()},
-				new Object[]{new JavaRmiSource()}
+				new Object[]{new JavaRmiSource()},
+				new Object[]{new SerializableRmiSource()}
 		);
 	}
 	

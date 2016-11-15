@@ -1,4 +1,4 @@
-package com.kncept.disjunction.loopback;
+package com.kncept.disjunction.messaging.transportimpl;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 

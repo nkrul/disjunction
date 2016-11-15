@@ -9,7 +9,7 @@ public interface MethodInvocation extends MethodEvent {
 	
 	public Object[] args();
 	
-	public static MethodInvocation invocation(final String objectName, final String methodsSignature, final Object[] args) {
+	public static MethodInvocation invocation(final String objectName, final String methodSignature, final Object[] args) {
 		return new MethodInvocation() {
 			@Override
 			public String objectName() {
@@ -17,7 +17,7 @@ public interface MethodInvocation extends MethodEvent {
 			}
 			@Override
 			public String methodSignature() {
-				return methodsSignature;
+				return methodSignature;
 			}
 			@Override
 			public Object[] args() {
